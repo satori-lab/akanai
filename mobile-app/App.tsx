@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { ColorValue, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { useAccelerometer } from './hooks/UseAccelerometer';
 import { useAudio } from './hooks/UseAudio';
 import { useEffect, useState } from 'react';
@@ -11,6 +10,7 @@ import { cloneObject } from './utils/copy';
 const threshold = 80;
 const roomId = "sound";
 const url = "http://192.168.11.62:8080/";
+const backgroundImage = require("./assets/background.png");
 
 interface SumahoStatusMessage {
   indivisualId: string
@@ -100,11 +100,30 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <ImageBackground source={backgroundImage} style={styles.image}>
+      {/* <Text>Open up App.tsx to start working on your app!</Text>
       <StatusBar style="auto" />
       <Text style={styles.text}>x: {accelerometer3Axis.x}</Text>
       <Text style={styles.text}>y: {accelerometer3Axis.y}</Text>
-      <Text style={styles.text}>z: {accelerometer3Axis.z}</Text>
+      <Text style={styles.text}>z: {accelerometer3Axis.z}</Text> */}
+      <View style={styles.timerBox}>
+        <View style={[{ flex: 5 }]}>
+          <Text style={styles.timerText}>01</Text>
+        </View>
+        <View style={[{ flex: 1 }]}>
+          <Text style={styles.timerTextSplit}>:</Text>
+        </View>
+        <View style={[{ flex: 5 }]}>
+          <Text style={styles.timerText}>48</Text>
+        </View>
+        <View style={[{ flex: 1 }]}>
+          <Text style={styles.timerTextSplit}>:</Text>
+        </View>
+        <View style={[{ flex: 5 }]}>
+          <Text style={styles.timerText}>34</Text>
+        </View>
+      </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -119,4 +138,39 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
   },
+  image: {
+    flex: 1,
+    resizeMode: "stretch",
+    width: '100%',
+    height: '100%',
+    justifyContent: "center"
+  },
+  timerBox: {
+    flex: 1,
+    width:'100%',
+    height:'30%',
+    left: '0%',
+    top: '35%',
+    position:'absolute',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  timerText: {
+    fontSize: 80,
+    color: "black",
+    textAlign: 'center',
+  },
+  timerTextSplit: {
+    fontSize: 50,
+    color: "black",
+    textAlign: 'center',
+  }
 });
+
+const bg = (backgroundColor: ColorValue, opacity: number = 0.2) => {
+  return {
+    backgroundColor,
+    opacity,
+  };
+};
