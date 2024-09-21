@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, Image } from 'react-native';
 import { useAccelerometer } from './hooks/UseAccelerometer';
 import { useAudio } from './hooks/UseAudio';
 import { useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ const threshold = 80;
 const roomId = "sound";
 const url = "http://192.168.11.62:8080/";
 const backgroundImage = require("./assets/background.png");
+const logo = require("./assets/logo.png");
 
 interface SumahoStatusMessage {
   indivisualId: string
@@ -24,7 +25,7 @@ export default function App() {
   const buzzerSound = useAudio(SoundSource.Buzzer, true);
   const socketClient = useWebSocket(url);
   const timerValue = useTimer(
-    60,
+    60 * 30,
     () => {},
   );
 
@@ -128,6 +129,7 @@ export default function App() {
           <Text style={styles.timerText}>{timeFontArranger(timerValue.restSeconds)}</Text>
         </View>
       </View>
+      <Image source={logo} style={styles.logo} />
       </ImageBackground>
     </View>
   );
@@ -170,6 +172,14 @@ const styles = StyleSheet.create({
     fontSize: 50,
     color: "black",
     textAlign: 'center',
+  },
+  logo: {
+    width:'50%',
+    height:'30%',
+    left: '25%',
+    top: '50%',
+    resizeMode: "contain",
+    position:'absolute',
   }
 });
 
