@@ -10,6 +10,7 @@ interface SoundPlayer {
 // anyとしているが使うものは音声ファイルを対象にrequireしたもの
 export const useAudio = (soundSource: any, isLooping: boolean): SoundPlayer => {
     const [sound, setSound] = useState<Audio.Sound|null>(null);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         (async() => {
@@ -25,10 +26,16 @@ export const useAudio = (soundSource: any, isLooping: boolean): SoundPlayer => {
 
     return {
         play: async () => {
+            if (isPlaying) {
+                return;
+            }
+        
             await sound?.playAsync(); 
+            setIsPlaying(true);
         },
         stop: async () => {
-            await sound?.stopAsync(); 
+            await sound?.stopAsync();
+            setIsPlaying(false);
         }
     }
 }

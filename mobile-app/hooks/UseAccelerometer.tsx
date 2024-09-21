@@ -1,6 +1,7 @@
 import { AccelerometerMeasurement, Accelerometer } from "expo-sensors";
 import { Subscription } from "expo-sensors/build/Pedometer";
 import { useState, useEffect } from "react";
+import { Platform } from 'react-native';
 
 const round = (n: number | null) => {
     if (!n) {
@@ -19,11 +20,17 @@ export const useAccelerometer = (updateInterval: number): AccelerometerMeasureme
     });
 
     const accelerometerListener = (measurement: AccelerometerMeasurement) => {
+        let z = round(measurement.z);
+
+        // androidとiosで判定が逆らしい
+        if (Platform.OS !== 'ios') {
+            z = -1 * z;
+        }
         setAccelerometer3Axis(
             {
                 x: round(measurement.x),
                 y: round(measurement.y),
-                z: round(measurement.z),
+                z: z,
                 timestamp: measurement.timestamp
             }
         )
