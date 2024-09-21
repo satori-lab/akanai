@@ -10,7 +10,7 @@ const round = (n: number | null) => {
     return Math.floor(n * 100);
 };
 
-export const useAccelerometer = (): AccelerometerMeasurement => {
+export const useAccelerometer = (updateInterval: number): AccelerometerMeasurement => {
     const [accelerometer3Axis, setAccelerometer3Axis] = useState<AccelerometerMeasurement>({
         x: 0,
         y: 0,
@@ -35,7 +35,7 @@ export const useAccelerometer = (): AccelerometerMeasurement => {
     ] = useState<Subscription | null>(null);
 
     const _subscribe = () => {
-        Accelerometer.setUpdateInterval(100);
+        Accelerometer.setUpdateInterval(updateInterval);
         setSubscription(Accelerometer.addListener(accelerometerListener));
     };
 
