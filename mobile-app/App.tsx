@@ -1,4 +1,4 @@
-import { ColorValue, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { useAccelerometer } from './hooks/UseAccelerometer';
 import { useAudio } from './hooks/UseAudio';
 import { useEffect, useState } from 'react';
@@ -6,6 +6,7 @@ import { SoundSource } from './const/sound';
 import { useWebSocket } from './hooks/UseWebSocket';
 import { generateUUID } from './utils/uuid';
 import { cloneObject } from './utils/copy';
+import { useTimer } from './hooks/UseTimer';
 
 const threshold = 80;
 const roomId = "sound";
@@ -22,6 +23,10 @@ export default function App() {
   const accelerometer3Axis = useAccelerometer(100);
   const buzzerSound = useAudio(SoundSource.Buzzer, true);
   const socketClient = useWebSocket(url);
+  const timerValue = useTimer(
+    60,
+    () => {},
+  );
 
   // 固有値の生成
   const [individualId, _] = useState(generateUUID());
@@ -108,19 +113,19 @@ export default function App() {
       <Text style={styles.text}>z: {accelerometer3Axis.z}</Text> */}
       <View style={styles.timerBox}>
         <View style={[{ flex: 5 }]}>
-          <Text style={styles.timerText}>01</Text>
+          <Text style={styles.timerText}>{timeFontArranger(timerValue.restHours)}</Text>
         </View>
         <View style={[{ flex: 1 }]}>
           <Text style={styles.timerTextSplit}>:</Text>
         </View>
         <View style={[{ flex: 5 }]}>
-          <Text style={styles.timerText}>48</Text>
+          <Text style={styles.timerText}>{timeFontArranger(timerValue.restMinutes)}</Text>
         </View>
         <View style={[{ flex: 1 }]}>
           <Text style={styles.timerTextSplit}>:</Text>
         </View>
         <View style={[{ flex: 5 }]}>
-          <Text style={styles.timerText}>34</Text>
+          <Text style={styles.timerText}>{timeFontArranger(timerValue.restSeconds)}</Text>
         </View>
       </View>
       </ImageBackground>
@@ -168,9 +173,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const bg = (backgroundColor: ColorValue, opacity: number = 0.2) => {
-  return {
-    backgroundColor,
-    opacity,
-  };
-};
+const timeFontArranger = (time: number): string => {
+  if (time > 9) {
+    return time.toString();
+  }
+
+  return "0" + time.toString();
+}
