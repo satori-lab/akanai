@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, View, Image } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, Image, LogBox } from 'react-native';
 import { useAccelerometer } from './hooks/UseAccelerometer';
 import { useAudio } from './hooks/UseAudio';
 import { useEffect, useState } from 'react';
@@ -13,6 +13,9 @@ const roomId = "sound";
 const url = "http://192.168.11.62:8080/";
 const backgroundImage = require("./assets/background.png");
 const logo = require("./assets/logo.png");
+
+// アプリ上のwarningログを非表示に
+LogBox.ignoreAllLogs();
 
 interface SumahoStatusMessage {
   indivisualId: string
